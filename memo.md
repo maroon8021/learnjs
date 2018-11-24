@@ -57,3 +57,12 @@ https://vscode-doc-jp.github.io/docs/userguide/integrated-terminal.html
 
 ### memo of AWS
 configとcredentialsは `home/user-name/.aws` にいる@windows
+
+### user-select
+Interesting
+https://developer.mozilla.org/ja/docs/Web/CSS/user-select
+
+
+## 181124
+### アイデンティティプール
+すべてのユーザーアイデンティティを保存するのに使えるコンテナ(cognito)
