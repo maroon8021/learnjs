@@ -1,5 +1,8 @@
 # Memo of studying
 
+## 役立ちそう
+https://www.task-notes.com/entry/20141026/1414322858
+
 ## 181117 
 ### ./sspa server 動かない問題
 **p.13** の `./sspa server` でサーバー立ち上げをwindowsでやろうとしたところちゃんと動かず。
@@ -66,3 +69,11 @@ https://developer.mozilla.org/ja/docs/Web/CSS/user-select
 ## 181124
 ### アイデンティティプール
 すべてのユーザーアイデンティティを保存するのに使えるコンテナ(cognito)
+
+### なんかエラーでた
+`aws: error: argument --identity-pool-id: expected one argument`
+?? -> https://github.com/awslabs/aws-cognito-angular-quickstart/issues/133
+https://github.com/danilop/LambdAuth/issues/51
+
+### 公式サイト
+https://developers.google.com/identity/sign-in/web/sign-in
