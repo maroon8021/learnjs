@@ -3,31 +3,74 @@
   <head>
     <meta charset='utf-8'>
     <title>Learn JS!</title>
+    <meta name="google-singin-client_id" content="209836392035-6qbbv4tcqd6umm4orpu27h8dceto24bp.apps.googleusercontent.com" />
+    
     <link href='//fonts.googleapis.com/css?family=Raleway:400,300,600' rel='stylesheet' type='text/css'>
     <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/normalize/3.0.2/normalize.min.css'>
     <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.min.css'>
     <script src='https://code.jquery.com/jquery-2.1.4.min.js'></script>
     <script src='/vendor.js'></script>
-    <script src='/app.js'></script>
     <style type="text/css" media="all">
       body { margin-top: 30px; }
       .templates{ display: none;}
+      .inline-list{
+        margin-bottom: 0px;
+      }
+      .inline-list li{
+        display: inline;
+        margin: 0 20px 0 0 ;
+      }
+      .fixed-top{
+        position: fixed;
+        top: 0px;
+        z-index: 1024;
+      }
+      .no-select{
+        user-select: none;
+        -webkit-user-select: none;
+        -ms-user-select: none;
+        -moz-user-select: none;
+      }
+      .hover-link a { text-decoration: none;}
+      .hover-link a:hover { text-decoration: underline;}
+
+      .nav-container{
+        padding-left: 40px;
+        background: #666;
+      }
+      .nav-container a{ color: #fff;}
+      .navbar-padding {
+        padding-top: 7px;
+        display: inline-block;
+      }
     </style>
   </head>
   <body>
-    <!--
-    <div class='container'>
-      <h1>It works!</h1>
-      <div>
-        <span>You're ready to start!</span>
-        <span>Skeleton 2, jQuery 2, and AWS Libraries are included.</span>
-      </div>
-    </div>
-  -->
     <div class="markup">
+      <div class="nav-container no-select fixed-top u-full-width">
+        <ul class="inline-list hover-links nav-list six columns">
+          <li><a class="text-lg" href="#">LearnJS</a></li>
+          <li><a href="#problem-1">Start</a></li>
+        </ul>
+        <div class="four columns">
+          <span class="navbar-padding u-pull-right">
+              <div class="g-signin2" data-onsuccess="onSignedIn" data-theme="dark"></div>
+              <a href="#" onclick="signOut();" id="signout"></a>
+              <!--
+              <div id="my-signin2"></div>
+              -->
+            <!--
+            <span class="g-signin2" data-onsuccess="googleSignIn"></span>
+            -->
+          </span>
+        </div>
+      </div>
       <div class="view-container container">
       </div>
       <div class="templates">
+        <li class="skip-btn">
+          <a>Skip This Problem</a>
+        </li>
         <div class="landing-view">
           <div class="row">
             <div class="one-half column">
@@ -57,9 +100,67 @@
 
       </div>
     </div>
+    <script src='/app.js'></script>
     
     <script type="text/JavaScript">
       $(window).ready(learnjs.appOnReady)
     </script>
+
+
+
+<!--
+<script type="text/JavaScript">
+  var auth2;
+gapi.load('auth2', function() {
+    gapi.auth2.init({
+    client_id: '209836392035-gju9lq1ntlvgfn1dgkmjkfouprga8bud.apps.googleusercontent.com',
+}).then(function(){
+    auth2 = gapi.auth2.getAuthInstance();
+    console.log(auth2.isSignedIn.get()); //now this always returns correctly        
+    });
+});
+</script>
+
+-->
+<script>
+    function signOut() {
+      var auth2 = gapi.auth2.getAuthInstance();
+      auth2.signOut();
+    }
+
+    function onSignedIn(googleUser) {
+      console.log('called');
+      const signoutElement = document.getElementById('signout');
+      signoutElement.innerHTML =
+          'Sign out ' + googleUser.getBasicProfile().getEmail();
+    }
+  </script>
+  <script src="https://apis.google.com/js/platform.js"></script>
+<!--
+<script>
+    function onSuccess(googleUser) {
+      console.log('Logged in as: ' + googleUser.getBasicProfile().getName());
+    }
+    function onFailure(error) {
+      console.log(error);
+    }
+    function renderButton() {
+      gapi.signin2.render('my-signin2', {
+        'clientId' : '209836392035-6qbbv4tcqd6umm4orpu27h8dceto24bp.apps.googleusercontent.com',
+        'client-id' : '209836392035-6qbbv4tcqd6umm4orpu27h8dceto24bp.apps.googleusercontent.com',
+        'client_id' : '209836392035-6qbbv4tcqd6umm4orpu27h8dceto24bp.apps.googleusercontent.com',
+        'scope': 'profile email',
+        'width': 240,
+        'height': 50,
+        'longtitle': true,
+        'theme': 'dark',
+        'onsuccess': onSuccess,
+        'onfailure': onFailure
+      });
+    }
+  </script>
+
+<script src="https://apis.google.com/js/platform.js?onload=renderButton" async defer ></script>
+-->
   </body>
 </html>
