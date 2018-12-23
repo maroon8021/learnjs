@@ -77,3 +77,71 @@ https://github.com/danilop/LambdAuth/issues/51
 
 ### 公式サイト
 https://developers.google.com/identity/sign-in/web/sign-in
+
+## 181215
+https://stackoverflow.com/questions/30425942/aws-cognito-invalid-identity-pool-configuration
+
+冷静に内容見てみたらアイデンティティプールとかの設定ができてなかったように思える
+そのため設定してみる
+
+
+./sspa create_table conf/dynamodb/tables/learnjs/ learnjs
+An error occurred (ResourceInUseException) when calling the CreateTable operation: Table already exists: learnjs
+Waiting for table creation...Traceback (most recent call last):
+  File "support/jsed.py", line 6, in <module>
+    doc = json.load(json_file)
+  File "/usr/lib/python2.7/json/__init__.py", line 291, in load
+    **kw)
+  File "/usr/lib/python2.7/json/__init__.py", line 339, in loads
+    return _default_decoder.decode(s)
+  File "/usr/lib/python2.7/json/decoder.py", line 364, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+  File "/usr/lib/python2.7/json/decoder.py", line 382, in raw_decode
+    raise ValueError("No JSON object could be decoded")
+ValueError: No JSON object could be decoded
+.Traceback (most recent call last):
+  File "support/jsed.py", line 6, in <module>
+    doc = json.load(json_file)
+  File "/usr/lib/python2.7/json/__init__.py", line 291, in load
+    **kw)
+  File "/usr/lib/python2.7/json/__init__.py", line 339, in loads
+    return _default_decoder.decode(s)
+  File "/usr/lib/python2.7/json/decoder.py", line 364, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+  File "/usr/lib/python2.7/json/decoder.py", line 382, in raw_decode
+    raise ValueError("No JSON object could be decoded")
+
+https://stackoverflow.com/questions/44564017/python-json-prase-valueerror-no-json-object-could-be-decoded
+https://stackoverflow.com/questions/11174024/attributeerrorstr-object-has-no-attribute-read
+https://qiita.com/Morio/items/7538a939cc441367070d
+http://programming-study.com/technology/python-json-dumps/
+http://programming-study.com/technology/python-file/
+
+## 181223
+結局上記のエラーはいい感じに解消できなかったので、普通のコマンドで対処するようにした。
+`config.json` のあるディレクトリまでいって
+`aws dynamodb create-table --cli-input-json file://config.json`
+初回やったときは
+`An error occurred (ResourceInUseException) when calling the CreateTable operation: Table already exists: learnjs`
+って出てきた。
+確かにちゃんと
+`./sspa create_table conf/dynamodb/tables/learnjs/ learnjs`
+が動いてなかっただけで、create-table自体は動いてた可能性があり、tableは作られていたよう。
+なので
+`aws dynamodb delete-table --table-name learnjs`
+で消す
+その後もう一度コマンド叩いたらちゃんと作られたぽい
+AWSのダッシュボードには表示されていないんだけど、大丈夫なんだろうか。
+
+role_policy.jsonが作られてなかったので、それは本を見ながら作成。
+Resourceはもちろん自分でつくったtableの情報に置き換えた
+
+とりあえず実装を進めてってリクエスト投げれるようになったら400エラーが出た
+最初にでたのは `AccessDeniedException` だった
+この辺のアクセスの詳細がわかっていないこともあったので、一旦 `AmazonDynamoDBFullAccess` を付与しておいた
+https://stackoverflow.com/questions/34784804/aws-dynamodb-issue-user-is-not-authorized-to-perform-dynamodbputitem-on-resou
+
+その後、 `ResourceNotFoundException` が出てきた
+-> 直接的な原因かわからんけど、とりあえず一旦AWSコンソールの見てるリージョンが違うことがわかった
+https://ap-northeast-1.console.aws.amazon.com/dynamodb/home?region=ap-northeast-1#
+なぜcreate-tableとやっても反映されないかと思ったが、AWS consoleのリージョンが違った関係で見れていなかった
