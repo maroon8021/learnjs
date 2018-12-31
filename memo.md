@@ -145,3 +145,24 @@ https://stackoverflow.com/questions/34784804/aws-dynamodb-issue-user-is-not-auth
 -> 直接的な原因かわからんけど、とりあえず一旦AWSコンソールの見てるリージョンが違うことがわかった
 https://ap-northeast-1.console.aws.amazon.com/dynamodb/home?region=ap-northeast-1#
 なぜcreate-tableとやっても反映されないかと思ったが、AWS consoleのリージョンが違った関係で見れていなかった
+もろもろを日本リージョンのところに変更した
+画面描画してみたら `Error: Invalid identity pool configuration. Check assigned IAM roles for this pool.`
+と出てきた。
+Cognito_learnjsAuth_Roleのロールの信頼関係の値を日本リージョンのものに変更してみた
+-> いい感じに接続はできるようになった
+
+### Error: Missing required key 'Key' in params
+なんでkeyなんて必要と言われてるんだ？
+-> AWS.DynamoDB.DocumentClient().get()ではItemじゃなくてKeyで書かないといけないらしい
+
+## 181231
+`./sspa build_bundle` 叩いたら `zipがない` と言われてコケた
+最初pythonのモジュールかと思ったけど、普通にlinuxのコマンドだった。
+なので入れ直し
+
+このサイトがけっこう詰まったところ書いてる気がする
+https://blog.mori-soft.com/entry/2017/08/18/174837
+
+
+`{"errorMessage":"Handler 'popularAnswers' missing on module 'index'"}`
+https://qiita.com/kazuqqfp/items/ac8d93918d0030b31aad
